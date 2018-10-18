@@ -1,0 +1,41 @@
+{
+  "name": "ethereum-events-lambda",
+  "version": "1.0.0",
+  "description": "listen to events",
+  "main": "handler.js",
+  "scripts": {
+    "test": "jest",
+    "lint": "eslint *js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/godfreyhobbs/ethereum-events-lambda.git"
+  },
+  "keywords": [
+    "ethereum",
+    "aws",
+    "lambda",
+    "infura"
+  ],
+  "author": "godfrey hobbs",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/godfreyhobbs/ethereum-events-lambda/issues"
+  },
+  "devDependencies": {
+    "eslint": "^5.7.0",
+    "eslint-config-standard": "^12.0.0",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-node": "^7.0.1",
+    "eslint-plugin-promise": "^4.0.1",
+    "eslint-plugin-standard": "^4.0.0",
+    "serverless-offline": "^3.27.0"
+  },
+  "homepage": "https://github.com/godfreyhobbs/ethereum-events-lambda#readme",
+  "dependencies": {
+    "aws-sdk": "^2.337.0",
+    "dotenv": "^6.1.0",
+    "node-fetch": "^2.2.0",
+    "node-uuid": "^1.4.8"
+  }
+}

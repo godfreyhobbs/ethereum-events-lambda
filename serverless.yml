@@ -1,0 +1,23 @@
+
+service: fetchEvents
+
+plugins:
+  - serverless-offline
+
+provider:
+  name: aws
+  runtime: nodejs8.10
+  timeout: 90
+
+functions:
+  fetchEvents:
+    handler: handler.fetchEvents
+    events:
+    - http:
+        path: fetchEvents
+        method: get
+        cors: true
+        request:
+          parameters:
+            querystrings:
+              topic: false
