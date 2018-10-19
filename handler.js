@@ -1,22 +1,11 @@
 'use strict';
 
+const processLogs = require('./processLogs.js');
 require('dotenv').load();
 const fetch = require('node-fetch');
 const uuid = require('node-uuid');
 const AWS = require('aws-sdk');
 const s3 = new AWS.S3();
-
-// For specific linnia function
-const simpleHexToAscii = function (hex) {
-  var str = '';
-  var i = 2 + 64 * 2; var l = hex.length;
-
-  for (; i < l; i += 2) {
-    var code = parseInt(hex.substr(i, 2), 16);
-    str += String.fromCharCode(code);
-  }
-  return str;
-};
 
 exports.fetchEvents = (event, context, callback) => {
   console.log(JSON.stringify(event));
@@ -48,21 +37,16 @@ exports.fetchEvents = (event, context, callback) => {
         `Failed to fetch ${response.url}: ${response.status} ${response.statusText}`));
     })
     .then(response => response.json())
-    .then(jsonRespone => {
+    .then(jsonResponse => {
       console.log(event.requestContext.requestTimeEpoch);
-      console.log('))))))))))))');
-      console.log(JSON.stringify(jsonRespone));
+      console.log(JSON.stringify(jsonResponse));
 
-      // For specific linnia function
-      for (let i = 0; i < jsonRespone.result.length; i++) {
-        console.log(jsonRespone.result[i].topics[1])
-        console.log(simpleHexToAscii(jsonRespone.result[i].data));
-      }
+      processLogs.process(jsonResponse);
 
       let putParams = {
         Bucket: process.env.BUCKET_ID,
         Key: uuid.v1(),
-        Body: JSON.stringify(jsonRespone)
+        Body: JSON.stringify(jsonResponse)
       };
       console.log(JSON.stringify(putParams));
       return s3.putObject(putParams).promise()
