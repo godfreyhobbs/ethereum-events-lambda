@@ -6,6 +6,18 @@ const uuid = require('node-uuid');
 const AWS = require('aws-sdk');
 const s3 = new AWS.S3();
 
+// For specific linnia function
+const simpleHexToAscii = function (hex) {
+  var str = '';
+  var i = 2 + 64 * 2; var l = hex.length;
+
+  for (; i < l; i += 2) {
+    var code = parseInt(hex.substr(i, 2), 16);
+    str += String.fromCharCode(code);
+  }
+  return str;
+};
+
 exports.fetchEvents = (event, context, callback) => {
   console.log(JSON.stringify(event));
   // TODO: make topic a parameter
@@ -23,7 +35,11 @@ exports.fetchEvents = (event, context, callback) => {
     'id': 1
   };
 
-  fetch('https://ropsten.infura.io/', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(requestBody) })
+  fetch('https://ropsten.infura.io/', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(requestBody)
+  })
     .then((response) => {
       if (response.ok) {
         return response;
@@ -36,6 +52,13 @@ exports.fetchEvents = (event, context, callback) => {
       console.log(event.requestContext.requestTimeEpoch);
       console.log('))))))))))))');
       console.log(JSON.stringify(jsonRespone));
+
+      // For specific linnia function
+      for (let i = 0; i < jsonRespone.result.length; i++) {
+        console.log(jsonRespone.result[i].topics[1])
+        console.log(simpleHexToAscii(jsonRespone.result[i].data));
+      }
+
       let putParams = {
         Bucket: process.env.BUCKET_ID,
         Key: uuid.v1(),
